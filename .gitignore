@@ -1,3 +1,4 @@
+.env
 *-debug.log
 *-error.log
 /.nyc_output
@@ -6,5 +7,3 @@
 /package-lock.json
 /tmp
 node_modules
-
-.env
