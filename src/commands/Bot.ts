@@ -45,8 +45,12 @@ export default class Bot {
     this.setToken(auth.token)
   }
 
+  private setToken (token: string): void {
+    this.token = token
+  }
+
   private async setBot (): Promise<void> {
-    this.bot = new TelegramBot(this.getToken(), { polling: true })
+    this.bot = new TelegramBot(this.token, { polling: true })
 
     this.bot.onText(/\/start/, (msg: ITelegramMessage) => {
       const chatId = msg.chat.id
@@ -56,13 +60,5 @@ export default class Bot {
         'Digite:\n 1 - Iniciar atendimento\n 2 - Suporte\n 3 - encerrar atendimento\n'
       )
     })
-  }
-
-  private getToken (): string {
-    return this.token
-  }
-
-  private setToken (token: string): void {
-    this.token = token
   }
 }

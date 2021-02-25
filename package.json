@@ -1,20 +1,14 @@
 {
   "name": "bot-telegram",
-  "version": "0.0.0",
-  "author": "Marcos  Oliveira",
-  "bin": {
-    "bot-telegram": "./bin/run"
+  "version": "1.0.0",
+  "author": "Marcos Vinicius",
+  "scripts": {
+    "dev": "ts-node-dev --inspect --respawn --transpile-only --ignore-watch node_modules src/app.ts"
   },
-  "bugs": "https://github.com/Vinicius/bot-telegram/issues",
   "dependencies": {
-    "@oclif/command": "^1",
-    "@oclif/config": "^1",
-    "@oclif/plugin-help": "^3",
-    "node-telegram-bot-api": "^0.51.0",
-    "tslib": "^1"
+    "node-telegram-bot-api": "^0.51.0"
   },
   "devDependencies": {
-    "@oclif/dev-cli": "^1",
     "@types/node": "^10",
     "@types/node-telegram-bot-api": "^0.51.1",
     "@typescript-eslint/eslint-plugin": "^4.15.2",
@@ -27,33 +21,7 @@
     "eslint-plugin-promise": "^4.2.1",
     "ts-node": "^8",
     "ts-node-dev": "^1.1.5",
-    "tsconfig-paths": "^3.9.0",
     "typescript": "^3.3"
   },
-  "engines": {
-    "node": ">=8.0.0"
-  },
-  "files": [
-    "/bin",
-    "/lib"
-  ],
-  "homepage": "https://github.com/Vinicius/bot-telegram",
-  "keywords": [
-    "oclif"
-  ],
-  "license": "MIT",
-  "main": "lib/index.js",
-  "oclif": {
-    "bin": "bot-telegram"
-  },
-  "repository": "Vinicius/bot-telegram",
-  "scripts": {
-    "posttest": "eslint . --ext .ts --config .eslintrc",
-    "prepack": "rm -rf lib && tsc -b && oclif-dev readme",
-    "test": "echo NO TESTS",
-    "version": "oclif-dev readme && git add README.md",
-    "start": "node bin/run",
-    "dev": "ts-node-dev --inspect --respawn --transpile-only --ignore-watch node_modules src/app.ts"
-  },
-  "types": "lib/index.d.ts"
+  "license": "MIT"
 }
