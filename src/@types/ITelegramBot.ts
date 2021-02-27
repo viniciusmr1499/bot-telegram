@@ -16,6 +16,7 @@ export interface ITelegramMessage {
   from: ITelegramFromMessage
   chat: ITelegramChat
   text: string
+  date: Date
 }
 
 export interface ITelegramBot {
