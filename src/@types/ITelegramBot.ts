@@ -1,7 +1,5 @@
 /* eslint-disable camelcase */
 interface ITelegramFromMessage {
-  id: number
-  is_bot: boolean
   first_name: string
 }
 
@@ -11,12 +9,25 @@ interface ITelegramChat {
   type: string
 }
 
+interface IReplyToMessages {
+  from: ITelegramFromMessage
+  chat: ITelegramChat
+  date: Date
+  text: string
+}
+
+interface IContact {
+  phone_number: string
+}
+
 export interface ITelegramMessage {
   message_id: number
   from: ITelegramFromMessage
   chat: ITelegramChat
-  text: string
-  date: Date
+  reply_to_messages: IReplyToMessages
+  contact?: IContact
+  text?: string
+  date?: Date
 }
 
 export interface ITelegramBot {

@@ -1,5 +1,5 @@
-import { ITelegramMessage } from '../@types/ITelegramBot'
-import api from '../config/api'
+import { ITelegramMessage } from '../../@types/ITelegramBot'
+import api from '../../config/api'
 
 interface IMessage {
   msg: ITelegramMessage
@@ -7,7 +7,7 @@ interface IMessage {
 
 class CreateSessionService {
   public async execute ({ msg }: IMessage): Promise<string> {
-    const response = await api.get(`sessions/me?name=${msg.chat.first_name}`)
+    const response = await api.get(`sessions/me?name=${msg.from.first_name}`)
 
     if (response.status !== 200) {
       throw new Error('It is not possible to close a non-existent session')
