@@ -50,7 +50,7 @@ class CreateSessionService {
 
     const { data: received } = response.data
 
-    cache.set(String(msg.chat.id), payload)
+    cache.set(String(msg.chat.id), JSON.stringify(payload))
     return received
   }
 }
