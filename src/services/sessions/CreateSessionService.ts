@@ -1,7 +1,7 @@
 import { uuid } from 'uuidv4'
 import { ITelegramMessage } from '../../@types/ITelegramBot'
 import api from '../../config/api'
-// import cache from '../redis/Cache'
+import cache from '../redis/Cache'
 
 interface IMessage {
   msg: ITelegramMessage
@@ -9,27 +9,36 @@ interface IMessage {
 
 class CreateSessionService {
   public static PHONE_NOT_EXISTS = 'Not exists phone'
+  public static MSG_RECEIVED = 'Mensagem recebida'
 
-  public async execute ({ msg }: IMessage): Promise<Object | string> {
-    if (!msg.contact?.phone_number) {
-      return {
-        error: CreateSessionService.PHONE_NOT_EXISTS,
-        msg: msg.text
-      }
+  public async execute ({ msg }: IMessage): Promise<string> {
+    /**
+     * TODO pegar o telefone direto da plataforma do telegram
+     */
+    // if (!msg.contact?.phone_number) {
+    //   return {
+    //     error: CreateSessionService.PHONE_NOT_EXISTS,
+    //     msg: msg.text
+    //   }
+    // }
+    const cached = await cache.get(String(msg.chat.id))
+    if (cached) {
+      /**
+       * TODO fazer update na collection sessions incrementando as mensagens
+       * Enviar data no formato correto
+       */
+      return CreateSessionService.MSG_RECEIVED
     }
-    console.log('CTT', msg.contact?.phone_number)
-    console.log('MSG', msg)
-    return ''
 
     const payload = {
       name: msg.from.first_name,
       platform_type: 'telegram',
-      contact_identifier: msg.contact.phone_number,
+      contact_identifier: '85996199709',
       messages: [
         {
           id: uuid(),
-          content: msg.reply_to_messages.text,
-          date: msg.reply_to_messages.date
+          content: msg.text,
+          date: msg.date
         }
       ]
     }
@@ -41,7 +50,7 @@ class CreateSessionService {
 
     const { data: received } = response.data
 
-    // cache.set(payload, response)
+    cache.set(String(msg.chat.id), payload)
     return received
   }
 }
