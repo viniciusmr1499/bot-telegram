@@ -1,0 +1,14 @@
+version: '3.7'
+services:
+  bot-telegram:
+    build: .
+    container_name: bot-telegram
+    network_mode: host
+    ports:
+      - 3000:3000
+    volumes:
+      - ./:/src
+    env_file:
+    - .env
+    command: sh -c "yarn install && yarn dev"
+    restart: unless-stopped
