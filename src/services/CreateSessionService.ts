@@ -8,15 +8,20 @@ interface IMessage {
 
 class CreateSessionService {
   public async execute ({ msg }: IMessage): Promise<string> {
+    /**
+     * PEGAR DADOS DO REDIS
+     */
     const response = await api.post('sessions', {
       name: msg.from.first_name,
       platform_type: 'telegram',
       contact_identifier: '85996199709',
-      messages: {
-        id: uuid(),
-        content: msg.text,
-        date: msg.date
-      }
+      messages: [
+        {
+          id: uuid(),
+          content: msg.text,
+          date: msg.date
+        }
+      ]
     })
 
     if (response.status !== 201) {

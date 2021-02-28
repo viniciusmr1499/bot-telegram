@@ -2,8 +2,8 @@ import { ITelegramMessage } from '../@types/ITelegramBot'
 import auth from '../config/auth'
 import ClosedSessionService from '../services/ClosedSessionService'
 import CreateSessionService from '../services/CreateSessionService'
-
-const TelegramBot = require('node-telegram-bot-api')
+import * as TelegramBot from 'node-telegram-bot-api'
+// import { InlineKeyboard } from 'node-telegram-keyboard-wrapper'
 
 export default class Bot {
   private token: string = ''
@@ -13,53 +13,55 @@ export default class Bot {
     this.setConfig()
   }
 
-  public async execute (): Promise<void> {
+  public async main (): Promise<void> {
     this.bot.on('message', (msg: ITelegramMessage) => {
       const chatId = msg.chat.id
       const { text } = msg
 
-      switch (text) {
-        case '/start':
-          try {
-            this.startSession(chatId, msg)
-          } catch (e) {
-            console.log(e.message)
-          }
-          break
-        case '1':
+      if (text === '/start') {
+        // TODO só cria sessão senao existir
+        console.log(msg)
+      }
 
-          // this.bot.sendMessage(chatId, 'Iniciando atendimento..')
-          // this.bot.sendMessage(chatId, 'Olá, me chamo Marcos Vincius!')
-          // this.bot.sendMessage(chatId, 'Em que posso ajudar?')
-          // this.bot.sendMessage(chatId, 'Pode contar comigo sempre!')
-          break
-        case '2':
-          this.bot.sendMessage(chatId, 'Iniciando atendimento com suporte..')
-          this.bot.sendMessage(chatId, 'Olá, me chamo Rafael Neri!')
-          this.bot.sendMessage(chatId, 'Em que posso ser útil?')
-          this.bot.sendMessage(chatId, 'Pode contar comigo sempre!')
-          break
-        case '3':
-          try {
-            this.closedSession(chatId, msg)
-          } catch (e) {
-            console.log(e.message)
-          }
-          break
-        default:
-          this.bot.sendMessage(chatId, 'Ops, não entendi, pode digitar novamente por favor?!')
+      console.log(msg)
+
+      try {
+        this.startSession(chatId, msg)
+      } catch (e) {
+        console.log(e.message)
       }
     })
   }
 
-  public async startSession (chatId: number, msg: ITelegramMessage): Promise<void> {
+  protected async startSession (chatId: number, msg: ITelegramMessage): Promise<void> {
     const sessionService = new CreateSessionService()
 
     const received = await sessionService.execute({ msg })
-    this.bot.sendMessage(chatId, received)
+    this.bot.sendMessage(chatId, received, {
+      parse_mode: 'HTML',
+      reply_markup: {
+        keyboard: [
+          [
+            {
+              text: 'compartilhar meu contato.',
+              request_contact: true
+            }
+          ]
+        ],
+        one_time_keyboard: true
+      }
+    })
+
+    // const ik = new InlineKeyboard()
+
+    // ik.addRow(
+    //   { text: '2:1 button', callback_data: 'Works!' },
+    //   { text: '2:2 button', callback_data: 'Works!' }
+    // )
+    // this.bot.sendMessage(chatId, received, ik.build())
   }
 
-  public async closedSession (chatId: number, msg: ITelegramMessage): Promise<void> {
+  protected async closedSession (chatId: number, msg: ITelegramMessage): Promise<void> {
     const closedService = new ClosedSessionService()
 
     const received = await closedService.execute({ msg })
@@ -69,29 +71,9 @@ export default class Bot {
   private async setConfig (): Promise<void> {
     this.setToken(auth.token)
     this.bot = new TelegramBot(this.token, { polling: true })
-    // this.setBot()
   }
 
   private setToken (token: string): void {
     this.token = token
   }
-
-  /* private async setBot (): Promise<void> {
-    this.bot = new TelegramBot(this.token, { polling: true })
-
-    this.bot.onText(/\/start/, (msg: ITelegramMessage) => {
-      const chatId = msg.chat.id
-
-      this.bot.sendMessage(chatId, 'Olá, eu me chamo BOT_DEV :) seja muito bem-vindo!!')
-      this.bot.sendMessage(chatId,
-        'Digite:\n 1 - Iniciar atendimento\n 2 - Suporte\n 3 - encerrar atendimento\n'
-      )
-
-      try {
-        this.startSession(chatId, msg)
-      } catch (e) {
-        console.log(e.message)
-      }
-    })
-  } */
 }

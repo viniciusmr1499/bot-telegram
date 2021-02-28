@@ -3,4 +3,4 @@ import Bot from './commands/Bot'
 
 const bot = new Bot()
 
-bot.execute()
+bot.main()
