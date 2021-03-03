@@ -1,4 +1,4 @@
 import 'dotenv/config'
-import Bot from './commands/Bot'
+import Main from './app/Main'
 
-Bot.main()
+Main.initialize()

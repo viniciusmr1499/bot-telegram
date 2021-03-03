@@ -1,5 +1,5 @@
-import { ITelegramMessage } from '../../@types/ITelegramBot'
-import api from '../../config/api'
+import { ITelegramMessage } from '../../../@types/ITelegramBot'
+import api from '../../../config/api'
 
 interface IMessage {
   msg: ITelegramMessage
