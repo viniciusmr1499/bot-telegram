@@ -1,6 +1,4 @@
 import 'dotenv/config'
-import Bot from './commands/Bot'
+import Main from './app/Main'
 
-const bot = new Bot()
-
-bot.main()
+Main.initialize()
