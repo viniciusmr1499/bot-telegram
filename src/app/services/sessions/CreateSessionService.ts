@@ -2,13 +2,16 @@
 import { uuid } from 'uuidv4'
 import { ITelegramMessage } from '../../../@types/ITelegramBot'
 import api from '../../../config/api'
+import cache from '../redis/Cache'
 
 class CreateSessionService {
   public async execute (msg: ITelegramMessage | any): Promise<boolean> {
     if (msg.text) {
+      cache.set('msg', msg.text)
       return false
     }
 
+    const content = await cache.get('msg')
     const { phone_number } = msg.contact
     const char = phone_number.charAt(0)
     const payload = {
@@ -19,7 +22,7 @@ class CreateSessionService {
       messages: [
         {
           id: uuid(),
-          content: msg.reply_to_message.text,
+          content,
           date: new Date().toISOString()
         }
       ]
