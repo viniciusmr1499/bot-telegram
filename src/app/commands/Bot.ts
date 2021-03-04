@@ -1,4 +1,3 @@
-// import { ITelegramMessage } from '../@types/ITelegramBot'
 import auth from '../../config/auth'
 import CreateSessionService from '../services/sessions/CreateSessionService'
 import PersisteMessageService from '../services/sessions/PersisteMessageService'
@@ -68,7 +67,7 @@ class Bot {
         keyboard: [
           [
             {
-              text: 'Compartilhar meu contato.',
+              text: 'Share my contact',
               request_contact: true
             }
           ]
