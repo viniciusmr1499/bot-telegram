@@ -1,9 +1,8 @@
 import * as mongoose from 'mongoose'
-import { Document, Schema } from 'mongoose'
 
-type Session = Document & {}
+type Session = mongoose.Document & {}
 
-const SessionSchema = new Schema(
+const SessionSchema = new mongoose.Schema(
   {
     name: {
       type: String,
